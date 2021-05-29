@@ -14,12 +14,13 @@
   "license": "ISC",
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "precommit": "lint-staged"
     }
   },
   "lint-staged": {
     "*.(js|jsx)": [
-      "make lint-w",
+      "node_modules/.bin/eslint --max-warnings=0",
+      "prettier --write",
       "git add"
     ]
   },
