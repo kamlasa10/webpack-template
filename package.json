@@ -8,15 +8,11 @@
     "start": "cross-env SERVE=true webpack serve",
     "watch": "webpack --watch",
     "build": "cross-env NODE_ENV=production webpack",
-    "build-dev": "webpack"
+    "build-dev": "webpack",
+    "precommit": "link-staged"
   },
   "author": "",
   "license": "ISC",
-  "husky": {
-    "hooks": {
-      "precommit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.(js|jsx)": [
       "node_modules/.bin/eslint --max-warnings=0",
