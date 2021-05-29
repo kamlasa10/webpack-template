@@ -1,14 +1,12 @@
 @use "global" as variable;
-@import "hero";
-
+@import 'hero';
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: variable.$bg ;
+	margin: 0;
+	padding: 0;
+	background-color: variable.$bg;
 }
-
 main {
-    display: grid;
-    align-items: center;
+	display: grid;
+	align-items: center;
 }
