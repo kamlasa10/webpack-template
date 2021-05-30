@@ -1,12 +1,12 @@
-@use "global" as variable;
-@import 'hero';
+// basic settings
+@import 'assets/fonts.scss';
 
 body {
-	margin: 0;
-	padding: 0;
-	background-color: variable.$bg;
+  margin: 0;
+  padding: 0;
+  background-color: white;
 }
 main {
-	display: grid;
-	align-items: center;
+  display: grid;
+  align-items: center;
 }

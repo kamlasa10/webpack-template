@@ -6,8 +6,16 @@
     "google"
   ],
   "rules": {
-    "plugins": ["prettier"]
+    "react/react-in-jsx-scope": "off",
+    "object-curly-spacing": "off",
+    "semi": "off",
+    "linebreak-style": 0
   },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": ["prettier"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true

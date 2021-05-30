@@ -1,26 +1,27 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
-const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
-let mode = "development"
+const path = require('path')
+let mode = 'development'
 let target = 'web'
 const plugins = [
   new CleanWebpackPlugin(),
   new MiniCssExtractPlugin(),
   new HtmlWebpackPlugin({
-    template: "./src/index.html"
+    template: './src/index.html',
   }),
 ]
 
-if(process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   mode = 'production'
   target = 'browserslist'
 }
 
-if(process.env.SERVE) {
-  plugins.push(  new ReactRefreshPlugin())
+if (process.env.SERVE) {
+  plugins.push(new ReactRefreshPlugin())
 }
 
 module.exports = {
@@ -31,48 +32,69 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    assetModuleFilename: "images/[hash][ext][query]"
+    filename:
+      mode === 'production' ? 'bundle.js' : 'bundle[fullhash].js',
+    assetModuleFilename: 'images/[hash][ext][query]',
   },
 
   module: {
     rules: [
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
-        type: 'assets ',
+        test: /\.svg$/,
+        // type: 'asset/inline',
+        // parser: {
+        //   dataUrlCondition: {
+        //     maxSize: 30 * 1024,
+        //   },
+        // },
+        use: '@svgr/webpack',
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        type: 'asset',
         parser: {
           dataUrlCondition: {
-            maxSize: 30 * 1024
-          }
-        }
+            maxSize: 30 * 1024,
+          },
+        },
       },
       {
         test: /\.s?css$/i,
         use: [
           {
-            loader:  MiniCssExtractPlugin.loader,
-            options: {publicPath: ""},
+            loader: MiniCssExtractPlugin.loader,
+            options: { publicPath: '' },
           },
           'css-loader',
           'postcss-loader',
-          'sass-loader']
+          'sass-loader',
+        ],
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader',  'eslint-loader']
-      }
-    ]
+        use: ['babel-loader', 'eslint-loader'],
+      },
+    ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+      }),
+    ],
   },
 
   plugins,
 
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
 
-  devtool: "source-map",
+  devtool: mode === 'production' ? false : 'source-map',
   devServer: {
     contentBase: './dist',
-    hot: true
-  }
+    hot: true,
+  },
 }
